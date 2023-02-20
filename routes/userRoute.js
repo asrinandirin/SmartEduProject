@@ -1,8 +1,9 @@
 const express = require('express')
-const userController = require('../controller/authController')
+const authController = require('../controller/authController')
 
 const router = express.Router()
 
-router.route('/signup').post(userController.createUser) // current adress : http://localhost:3000/users/signup
+router.route('/signup').post(authController.createUser) // current adress : http://localhost:3000/user/signup
+router.route('/login').post(authController.loginUser) // current adress : http://localhost:3000/user/login
 
 module.exports = router

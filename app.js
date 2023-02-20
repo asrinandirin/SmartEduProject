@@ -6,6 +6,7 @@ const courseRoute = require('./routes/courseRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const userRoute = require('./routes/userRoute')
 
+
 //CONNECT DB
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://127.0.0.1/smartedu-db').then(() => {
