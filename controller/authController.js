@@ -4,10 +4,7 @@ const bcrypt = require('bcrypt')
 exports.createUser = async (req, res) => {
     try {
         const user = await User.create(req.body)
-        res.status(201).json({
-            status: 'success',
-            user,
-        })
+        res.status(201).redirect('/login')
     } catch (error) {
         res.status(400).json({
             status: 'fail',
@@ -22,7 +19,9 @@ exports.loginUser = async (req, res) => {
         let user = await User.findOne({ email })
         let same = await bcrypt.compare(password, user.password)
         if (same) {
-            res.status(200).send('You are logged in')
+            // USER SESSION 
+            req.session.userID = user._id 
+            res.status(200).redirect('/users/dashboard')
         } else {
             res.send('Geçersiz')
         }
@@ -32,4 +31,18 @@ exports.loginUser = async (req, res) => {
             error,
         })
     }
+}
+
+exports.logOutUser = (req,res) => {
+    req.session.destroy(() => {
+        res.redirect('/')
+    })
+}
+
+exports.getDashboardPage = async (req, res) => {
+    const user = await User.findOne({_id:req.session.userID})
+    res.status(200).render('dashboard', {
+        pageName: 'dashboard',
+        user
+    })
 }
